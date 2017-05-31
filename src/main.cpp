@@ -27,7 +27,7 @@ std::stringstream hasData(std::string s)
 {
   auto found_null = s.find("null");
   auto b1 = s.find_first_of("[");
-  auto b2 = s.find_last_of("]");
+  auto b2 = s.rfind("}]");
 
   if (found_null != std::string::npos) 
 	{
@@ -36,7 +36,8 @@ std::stringstream hasData(std::string s)
   else if (b1 != std::string::npos && b2 != std::string::npos) 
 	{
 	  std::stringstream tmp = std::stringstream();
-	  tmp.str(s.substr(b1, b2 - b1 + 1));
+	  //tmp.str(s.substr(b1, b2 - b1 + 1));
+		tmp.str(s.substr(b1, b2 - b1 + 2));
 	  return tmp;
   }
 
@@ -86,7 +87,7 @@ Eigen::VectorXd polyfit(Eigen::VectorXd xvals, Eigen::VectorXd yvals,	int order)
 }
 
 
-int main(int argc, const char *argv[])
+int main(/*int argc, const char *argv[]*/)
 {
   uWS::Hub h;
 	
@@ -196,8 +197,8 @@ int main(int argc, const char *argv[])
 						ws.send(msg.data(), msg.length(), uWS::OpCode::TEXT);
         }
       } 
-			else 
-			{
+	else 
+	{
         // Manual driving
         std::string msg = "42[\"manual\",{}]";
         ws.send(msg.data(), msg.length(), uWS::OpCode::TEXT);
